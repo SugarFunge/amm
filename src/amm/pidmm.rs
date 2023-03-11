@@ -6,8 +6,8 @@ use rust_decimal_macros::dec;
 pub struct PIDMarketMaker {
     reserves_a: Decimal,
     reserves_b: Decimal,
-    target_price: Decimal,
-    pid_controller: PIDController,
+    pub target: Decimal,
+    pub pid: PIDController,
     cached_price: Decimal,
 }
 
@@ -28,7 +28,7 @@ impl LiquidityPool for PIDMarketMaker {
         } else {
             let new_ratio = self.compute_ratio(total_reserves);
             self.cached_price = new_ratio
-                .checked_mul(self.target_price)
+                .checked_mul(self.target)
                 .unwrap_or_else(|| Decimal::ZERO);
         }
     }
@@ -64,8 +64,8 @@ impl Default for PIDMarketMaker {
         Self {
             reserves_a: Decimal::ZERO,
             reserves_b: Decimal::ZERO,
-            target_price: Decimal::ONE,
-            pid_controller: PIDController::default(),
+            target: Decimal::ONE,
+            pid: PIDController::default(),
             cached_price: Decimal::ZERO,
         }
     }
@@ -75,7 +75,7 @@ impl PIDMarketMaker {
     /// Computes the ratio of the two assets in the pool.
     fn compute_ratio(&mut self, total_reserves: Decimal) -> Decimal {
         let new_reserves_a = total_reserves
-            .checked_mul(self.target_price)
+            .checked_mul(self.target)
             .and_then(|p| p.sqrt())
             .map(|p| {
                 self.reserves_a
@@ -84,11 +84,11 @@ impl PIDMarketMaker {
             })
             .unwrap_or_else(|| Decimal::ZERO);
         let new_reserves_b = total_reserves - new_reserves_a;
-        let error = self.target_price
+        let error = self.target
             - new_reserves_b
                 .checked_div(new_reserves_a)
                 .unwrap_or_else(|| Decimal::ZERO);
-        let control_signal = self.pid_controller.compute(error);
+        let control_signal = self.pid.compute(error);
         let new_ratio = self
             .reserves_b
             .checked_div(self.reserves_a + control_signal)
@@ -100,9 +100,9 @@ impl PIDMarketMaker {
 /// A PID controller for controlling the asset ratio in a liquidity pool.
 #[derive(Debug, Clone)]
 pub struct PIDController {
-    kp: Decimal,         // Proportional gain
-    ki: Decimal,         // Integral gain
-    kd: Decimal,         // Derivative gain
+    pub kp: Decimal,     // Proportional gain
+    pub ki: Decimal,     // Integral gain
+    pub kd: Decimal,     // Derivative gain
     integral: Decimal,   // Integral term accumulator
     prev_error: Decimal, // Previous error value
 }
