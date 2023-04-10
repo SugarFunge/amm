@@ -1,7 +1,7 @@
 # Automated Market Making (AMM) Tool for Large Language Models (LLMs)
 
 ## Proportional Integral and Derivative Market Maker (PIDMM)
-Proportional Integral and Derivative Market Maker (PIDMM) is a new automated market making (AMM) system, developed by SugarFunge, that utilizes control theory to dynamically adjust the pricing of assets in a decentralized market. The goal of our PIDMM system is to balance the supply and demand of assets in the market, ensuring that the market remains stable and liquid.
+Proportional Integral and Derivative Market Maker (PIDMM) is a new automated market making (AMM) system, developed by Sortium and SugarFunge, that utilizes control theory to dynamically adjust the pricing of assets in a decentralized market. The goal of our PIDMM system is to balance the supply and demand of assets in the market, ensuring that the market remains stable and liquid.
 
 Here's how the three components of our PIDMM system work:
 - *Proportional Control*: The proportional component of the PIDMM system adjusts the price of an asset in response to changes in the supply and demand of that asset. For example, if there is high demand for a particular asset, the PIDMM system will increase the price of that asset to reduce demand and encourage more supply. Conversely, if there is high supply of a particular asset, the PIDMM system will decrease the price of that asset to encourage more demand and reduce supply.

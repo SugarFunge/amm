@@ -1,4 +1,4 @@
-use amm::{cpmm::*, pidmm::*, LiquidityPool};
+use amm::{cpmm::*, LiquidityPool};
 use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
     execute,
@@ -39,9 +39,9 @@ impl App {
         // amm.pid.kp = dec!(0.1);
         // amm.pid.ki = dec!(0.0);
         // amm.pid.kd = dec!(0.0);
-        
+
         let mut amm = ConstantProductMarketMaker::default();
-        
+
         amm.add_liquidity(dec!(1000), dec!(1200));
 
         let mut data1 = vec![];
